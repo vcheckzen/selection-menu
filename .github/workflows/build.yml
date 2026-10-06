@@ -1,0 +1,36 @@
+name: Build
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    if: github.event_name == 'workflow_dispatch' && github.actor == github.repository_owner
+    runs-on: windows-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Build Windows XP-compatible binary
+        shell: cmd
+        run: build_msvc.bat
+
+      - name: Verify output
+        shell: pwsh
+        run: |
+          if (-not (Test-Path 'build\selection-menu.exe')) {
+            throw 'build\selection-menu.exe was not produced'
+          }
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: selection-menu-win32
+          path: |
+            build/selection-menu.exe
+            README.md
+            DEVELOPMENT.md
+          if-no-files-found: error
