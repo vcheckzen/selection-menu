@@ -25,7 +25,7 @@ call "%VCVARS%" x86 || exit /b 1
 
 if not exist build mkdir build
 
-set CFLAGS=/nologo /W3 /O2 /MT /GS- /DUNICODE /D_UNICODE /DWINVER=0x0501 /D_WIN32_WINNT=0x0501 /Isrc
+set CFLAGS=/nologo /W3 /O2 /MT /GS- /utf-8 /DUNICODE /D_UNICODE /DWINVER=0x0501 /D_WIN32_WINNT=0x0501 /Isrc
 
 rc.exe /nologo /fo build\app.res src\app.rc
 if errorlevel 1 (
