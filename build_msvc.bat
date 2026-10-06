@@ -27,9 +27,15 @@ if not exist build mkdir build
 
 set CFLAGS=/nologo /W3 /O2 /MT /GS- /DUNICODE /D_UNICODE /DWINVER=0x0501 /D_WIN32_WINNT=0x0501 /Isrc
 
+rc.exe /nologo /fo build\app.res src\app.rc
+if errorlevel 1 (
+    echo RESOURCE COMPILATION FAILED
+    exit /b 1
+)
+
 cl %CFLAGS% /Fe:build\selection-menu.exe ^
    src\main.c src\config.c src\util.c src\icons.c src\hotkey.c ^
-   src\detect.c src\uia.c src\popup.c src\tray.c src\settings.c src\app.rc ^
+   src\detect.c src\uia.c src\popup.c src\tray.c src\settings.c build\app.res ^
    /link /SUBSYSTEM:WINDOWS kernel32.lib user32.lib gdi32.lib shell32.lib advapi32.lib comctl32.lib comdlg32.lib ole32.lib oleaut32.lib oleacc.lib
 
 if errorlevel 1 (
